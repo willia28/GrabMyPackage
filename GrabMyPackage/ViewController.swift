@@ -8,8 +8,9 @@
 // 
 
 import UIKit
+import MessageUI
 
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, MFMailComposeViewControllerDelegate {
 
     @IBOutlet weak var personTableView: UITableView!
     
@@ -28,6 +29,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         personTableView.dataSource = self
         personTableView.delegate = self
+        
         
         personTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
         
@@ -55,12 +57,92 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
 // MARK: UI Table View Delegate
 
+    /*
+    if MFMailComposeViewController.canSendMail() {
+    let controller = MFMailComposeViewController()
+    
+    let subject = NSMutableString()
+    
+    subject.appendString("\(BizLogic.venueName()): ")
+    
+    if let notes = self.notes {
+    subject.appendString("\(notes) ")
+    }
+    
+    subject.appendString("\n#\(self.orderNumber)")
+    
+    controller.setSubject(subject as String)
+    controller.setToRecipients([BizLogic.businessEmail()])
+    controller.setMessageBody(self.stringFromOrder(self.order), isHTML: false)
+    controller.mailComposeDelegate = self
+    
+    self.presentViewController(controller, animated: true, completion: { () -> Void in
+    
+    })
+    }
+*/
+    
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let p = personList[indexPath.row]
         
+        if MFMailComposeViewController.canSendMail() {
+            let controller = MFMailComposeViewController()
+            
+            let subject = NSMutableString()
+            
+            subject.appendString(p.firstName + " you have a package!")
+            
+            
+            controller.setSubject(subject as String)
+            controller.setToRecipients([p.emailAddress])
+            controller.setMessageBody("Please come pick up your package from the secon floor Mail Room", isHTML: false)
+            controller.mailComposeDelegate = self
+            
+            self.presentViewController(controller, animated: true, completion: { () -> Void in
+                
+            })
+            
+            
+        
+        }
         
     }
     
+/*
+    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
+    
+    NSUserDefaults.standardUserDefaults().setInteger(self.orderNumber, forKey: self.orderKeyPath)
+    
+    print(result)
+    
+    if let e = error {
+    print(e.localizedDescription)
+    }
+    
+    if result == MFMailComposeResultSent {
+    
+    self.trackOrder()
+    
+    self.presentingViewController?.dismissViewControllerAnimated(true, completion: { () -> Void in
+    })
+    
+    } else if result == MFMailComposeResultSaved{
+    controller.dismissViewControllerAnimated(true) { () -> Void in
+    
+    }
+    } else if result == MFMailComposeResultFailed {
+    controller.dismissViewControllerAnimated(true) { () -> Void in
+    
+    }
+    } else if result == MFMailComposeResultCancelled{
+    controller.dismissViewControllerAnimated(true) { () -> Void in
+    
+    }
+    }
+    
+    }
+*/
     
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
