@@ -9,7 +9,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITableViewDataSource {
 
     @IBOutlet weak var personTableView: UITableView!
     
@@ -26,14 +26,30 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        personTableView.dataSource = self
+        
+        personTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        
         print(personList)
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+    func tableView(tableView: UITableView,
+        cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+            let p = personList[indexPath.row]
+            
+            let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath)
+            cell.textLabel?.numberOfLines = 0
+            
+            cell.textLabel?.text = p.firstName + " " + p.lastName + "\n" + p.emailAddress
 
+            return cell
+            
+            
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return personList.count
+    }
     
 
 }
