@@ -9,7 +9,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDataSource {
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var personTableView: UITableView!
     
@@ -21,18 +21,19 @@ class ViewController: UIViewController, UITableViewDataSource {
         Person(firstName: "Bill", lastName: "Cotto", emailAddress: "wcotto@pmc.com")
         
     ]
-    
+// MARK: view life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
         personTableView.dataSource = self
+        personTableView.delegate = self
         
         personTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
         
         print(personList)
     }
-
+// MARK: UI Table View Datasource
     func tableView(tableView: UITableView,
         cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
             let p = personList[indexPath.row]
@@ -42,6 +43,8 @@ class ViewController: UIViewController, UITableViewDataSource {
             
             cell.textLabel?.text = p.firstName + " " + p.lastName + "\n" + p.emailAddress
 
+            cell.contentView.backgroundColor = UIColor.cyanColor()
+            
             return cell
             
             
@@ -50,7 +53,18 @@ class ViewController: UIViewController, UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return personList.count
     }
-    
+// MARK: UI Table View Delegate
 
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let p = personList[indexPath.row]
+        
+        
+    }
+    
+    
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 60
+    }
 }
 
