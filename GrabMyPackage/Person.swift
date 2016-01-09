@@ -8,10 +8,17 @@
 // Defining a person
 import Foundation
 
-struct Person  {
-    var firstName:String?
-    var lastName:String?
-    var emailAddress:String?
+struct Person {
+    
+    let firstName, lastName, emailAddress: String
+    
+    init(firstName:String, lastName:String, emailAddress:String) {
+     
+        self.firstName  = firstName
+        self.lastName = lastName
+        self.emailAddress = emailAddress
+        
+    }
 }
 
 
