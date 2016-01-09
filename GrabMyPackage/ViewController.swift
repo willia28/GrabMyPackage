@@ -108,11 +108,24 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         
     }
+  
     
+    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
+        print(result)
+        
+        if let e = error {
+            print(e.localizedDescription)
+        }
+        
+        if result == MFMailComposeResultSent {
+            controller.dismissViewControllerAnimated(true) { () -> Void in
+                
+            }
+        }
+    }
 /*
     func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
     
-    NSUserDefaults.standardUserDefaults().setInteger(self.orderNumber, forKey: self.orderKeyPath)
     
     print(result)
     
